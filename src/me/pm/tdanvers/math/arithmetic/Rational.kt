@@ -36,7 +36,11 @@ data class Rational(
   override fun unaryMinus() = Rational(-numerator, denominator)
   override val inverse get() = Rational(denominator, numerator).normalized
 
-  fun Rational.floor() = Rational(dividend.asBigInteger() / divisor.asBigInteger())
+  fun Rational.floor() = simplified.run {
+    if (denominator == BigInteger.ONE) this
+    else if (normalized.numerator.signum() >= 0) Rational(numerator / denominator)
+    else -((-this) + one).run { Rational(numerator / denominator) }
+  }
 
   override fun plus(other: Rational) = Rational(
     this.numerator * other.denominator + this.denominator * other.numerator,
