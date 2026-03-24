@@ -7,13 +7,16 @@ import java.math.*
 data class Rational(
   private val numerator: BigInteger,
   private val denominator: BigInteger = BigInteger.ONE
-): Comparable<Rational>, DivisionRing<Rational>, InSet {
+): WellOrderedRing<Rational>, DivisionRing<Rational>, InSet {
   init { require(denominator.signum() != 0) { "$this ∉ $Rational" } }
   companion object {
     override fun toString() = "ℚ"
     val ZERO = 0.q()
     val ONE = 1.q()
   }
+
+  val dividend = normalized.numerator.z()
+  val divisor = normalized.denominator.n()
 
   val normalized get() =
     if (denominator.signum() >= 0) this
@@ -27,20 +30,20 @@ data class Rational(
     }
   }
 
-  val dividend = normalized.numerator.z()
-  val divisor = normalized.denominator.n()
+  val Rational.rounded get() = (this + 0.5.q()).floor
+  val Rational.ceiling get() = -((-this).floor)
+  val Rational.floor get() = simplified.run {
+    if (denominator == BigInteger.ONE) this
+    else if (normalized.numerator.signum() >= 0) Rational(numerator / denominator)
+    else -((-this) + one).run { Rational(numerator / denominator) }
+  }
 
   override val zero: Rational get() = ZERO
   override val one: Rational get() = ONE
   override fun unaryPlus() = this
   override fun unaryMinus() = Rational(-numerator, denominator)
+  override val abs get() = Rational(numerator.abs(), denominator.abs())
   override val inverse get() = Rational(denominator, numerator).normalized
-
-  fun Rational.floor() = simplified.run {
-    if (denominator == BigInteger.ONE) this
-    else if (normalized.numerator.signum() >= 0) Rational(numerator / denominator)
-    else -((-this) + one).run { Rational(numerator / denominator) }
-  }
 
   override fun plus(other: Rational) = Rational(
     this.numerator * other.denominator + this.denominator * other.numerator,
@@ -76,7 +79,7 @@ data class Rational(
   }
 
   override fun toString() = normalized.run {
-    if (denominator == ONE) "$numerator"
+    if (denominator == BigInteger.ONE) "$numerator"
     else "${numerator.toSuperscript()}⁄${denominator.toSubscript()}"
   }
 

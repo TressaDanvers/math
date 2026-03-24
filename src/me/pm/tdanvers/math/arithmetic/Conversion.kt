@@ -9,4 +9,6 @@ fun Whole.q() = asBigInteger().q()
 
 fun Integral.q() = asBigInteger().q()
 
-fun Rational.zFloor() = floor().dividend
+fun Rational.zRounded() = rounded.dividend
+fun Rational.zCeiling() = ceiling.dividend
+fun Rational.zFloor() = floor.dividend
