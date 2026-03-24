@@ -28,7 +28,7 @@ data class Rational(
   }
 
   val dividend = normalized.numerator.z()
-  val divisor = normalized.numerator.n()
+  val divisor = normalized.denominator.n()
 
   override val zero: Rational get() = ZERO
   override val one: Rational get() = ONE
