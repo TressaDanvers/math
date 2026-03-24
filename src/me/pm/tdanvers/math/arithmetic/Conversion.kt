@@ -8,3 +8,5 @@ fun Whole.z() = asBigInteger().z()
 fun Whole.q() = asBigInteger().q()
 
 fun Integral.q() = asBigInteger().q()
+
+fun Rational.zFloor() = floor().dividend
