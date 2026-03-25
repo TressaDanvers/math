@@ -1,4 +1,4 @@
-package me.pm.tdanvers.math.ring.theory
+package me.pm.tdanvers.math.algebra.ring.theory
 
 interface DivisionRing<T: DivisionRing<T>>: Ring<T> {
   val inverse: T

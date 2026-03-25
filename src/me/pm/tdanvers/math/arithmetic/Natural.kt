@@ -1,7 +1,8 @@
 package me.pm.tdanvers.math.arithmetic
 
 import me.pm.tdanvers.math.*
-import me.pm.tdanvers.math.ring.theory.*
+import me.pm.tdanvers.math.arithmetic.number.theory.Factoring
+import me.pm.tdanvers.math.algebra.ring.theory.NearSemiring
 import java.math.*
 
 data class Natural(private val value: BigInteger)

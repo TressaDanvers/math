@@ -1,4 +1,4 @@
-package me.pm.tdanvers.math.ring.theory
+package me.pm.tdanvers.math.arithmetic.number.theory
 
 interface Factoring<T: Factoring<T>> {
   val factors: Map<T, T>
