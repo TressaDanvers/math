@@ -1,4 +1,4 @@
-package me.pm.tdanvers.math.arithmetic
+package me.pm.tdanvers.math.arithmetic.number.theory
 
 import java.math.BigInteger
 

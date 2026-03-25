@@ -55,7 +55,7 @@ data class Matrix<T: Ring<T>>(private val rows: List<List<T>>)
       .let(::Matrix)
 
   fun cofactor(row: Natural, column: Natural) =
-    minor(row, column).determinant
+    minor(row, column).determinant.let { if ((row + column).toIntExact() % 2 == 0) it else -it }
 
   private var determinantMemo: T? = null
   val determinant: T get() {
@@ -84,10 +84,13 @@ data class Matrix<T: Ring<T>>(private val rows: List<List<T>>)
   private var inverseMemo: Matrix<T>? = null
   override val inverse: Matrix<T> get() {
     require(topLeft is DivisionRing<*>) { "${toContainingSetString()} is not a division ring" }
-    require(determinant != determinant.zero) {  }
     try {
       return inverseMemo ?:
-      ((determinant as DivisionRing<T>).inverse * cofactors.transpose).also { inverseMemo = it }
+      (determinant as DivisionRing<T>)
+        .runCatching { inverse }
+        .getOrElse { throw IllegalArgumentException("det($this) is not invertible", it) }
+        .let { it * cofactors.transpose }
+        .also { inverseMemo = it }
     } catch (e: IllegalArgumentException) {
       throw IllegalArgumentException("$this is not an invertible matrix", e)
     }
@@ -124,7 +127,7 @@ data class Matrix<T: Ring<T>>(private val rows: List<List<T>>)
   override fun div(other: Matrix<T>): Matrix<T> = this * other.inverse
 
   override fun toString() =
-    rows.joinToString("|") { it.joinToString(" ") }.let { "[$it]" }
+    rows.joinToString(" | ") { it.joinToString(" ") }.let { "[ $it ]" }
 
   override fun toContainingSetString() =
     (if (topLeft is InSet) (topLeft as InSet).toContainingSetString() else "\uD835\uDCE1") +

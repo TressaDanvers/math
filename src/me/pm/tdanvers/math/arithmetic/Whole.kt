@@ -1,12 +1,13 @@
 package me.pm.tdanvers.math.arithmetic
 
 import me.pm.tdanvers.math.*
-import me.pm.tdanvers.math.arithmetic.number.theory.Factoring
-import me.pm.tdanvers.math.algebra.ring.theory.Semiring
+import me.pm.tdanvers.math.algebra.ring.theory.*
+import me.pm.tdanvers.math.arithmetic.number.theory.*
 import java.math.*
+import kotlin.Comparable as WellOrdered
 
 data class Whole(private val value: BigInteger)
-  : Comparable<Whole>, Semiring<Whole>, Factoring<Whole>, InSet {
+  : WellOrdered<Whole>, Semiring<Whole>, Factoring<Whole>, InSet {
   init { require(value.signum() >= 0) { "$this ∉ $Whole" } }
   companion object {
     override fun toString() = "ℕ₀"

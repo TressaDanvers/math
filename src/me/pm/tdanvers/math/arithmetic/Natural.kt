@@ -1,12 +1,13 @@
 package me.pm.tdanvers.math.arithmetic
 
 import me.pm.tdanvers.math.*
-import me.pm.tdanvers.math.arithmetic.number.theory.Factoring
-import me.pm.tdanvers.math.algebra.ring.theory.NearSemiring
+import me.pm.tdanvers.math.algebra.ring.theory.*
+import me.pm.tdanvers.math.arithmetic.number.theory.*
 import java.math.*
+import kotlin.Comparable as WellOrdered
 
 data class Natural(private val value: BigInteger)
-  : Comparable<Natural>, NearSemiring<Natural>, Factoring<Natural>, InSet {
+  : WellOrdered<Natural>, NearSemiring<Natural>, Factoring<Natural>, InSet {
   init { require(value.signum() > 0) { "$this ∉ $Natural" } }
   companion object {
     override fun toString() = "ℕ₊"

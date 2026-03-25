@@ -5,6 +5,7 @@ package me.pm.tdanvers.math.algebra
 import me.pm.tdanvers.math.*
 import me.pm.tdanvers.math.algebra.group.theory.*
 import me.pm.tdanvers.math.algebra.ring.theory.*
+import kotlin.Comparable as WellOrdered
 
 data class Dual<T: Ring<T>>(val scalar: T, val dual: T = scalar.zero)
   : WellOrderedRing<Dual<T>>, DivisionRing<Dual<T>>, ScalesWith<Dual<T>, T>, InSet {
@@ -22,6 +23,7 @@ data class Dual<T: Ring<T>>(val scalar: T, val dual: T = scalar.zero)
   override fun unaryPlus() = this
   override fun unaryMinus() = Dual(-scalar, -dual)
   override val abs get() = if (this < zero) -this else this
+
   override val inverse: Dual<T> get() {
     require(scalar is DivisionRing<*>) { "${toContainingSetString()} is not a division ring" }
     try { return (quadrance as DivisionRing<T>).inverse * conjugate }
@@ -55,9 +57,9 @@ data class Dual<T: Ring<T>>(val scalar: T, val dual: T = scalar.zero)
     else this * other.inverse
 
   override fun compareTo(other: Dual<T>): Int {
-    require(scalar is WellOrderedRing<*>) { "${toContainingSetString()} is not well-ordered" }
-    return if (this.scalar == other.scalar) (this.dual as Comparable<T>).compareTo(other.dual)
-    else (this.scalar as Comparable<T>).compareTo(other.scalar)
+    require(scalar is WellOrdered<*>) { "${toContainingSetString()} is not well-ordered" }
+    return if (this.scalar == other.scalar) (this.dual as WellOrdered<T>).compareTo(other.dual)
+    else (this.scalar as WellOrdered<T>).compareTo(other.scalar)
   }
 
   override fun toString() =

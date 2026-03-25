@@ -1,6 +1,6 @@
 package me.pm.tdanvers.math.algebra.ring.theory
 
-import me.pm.tdanvers.math.algebra.group.theory.Scales
+import me.pm.tdanvers.math.algebra.group.theory.*
 
 interface NearSemiring<T: NearSemiring<T>>: Scales<T> {
   val one: T
