@@ -1,6 +1,6 @@
 package me.pm.tdanvers.math.arithmetic.number.theory
 
-import java.math.BigInteger
+import java.math.*
 
 internal fun BigInteger.factor() = sequence {
   var i = BigInteger.ONE
